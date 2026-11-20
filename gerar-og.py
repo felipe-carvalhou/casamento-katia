@@ -1,45 +1,404 @@
-# Gera o og.jpg (1200x630) a partir do index.html. Uso: python3 gerar-og.py index.html og.jpg
-# Requer: pip install playwright && playwright install chromium; fontes: npm i @fontsource/pinyon-script @fontsource/cormorant-garamond @fontsource/jost (ajuste a variavel F)
-import sys, asyncio
-from playwright.async_api import async_playwright
-F='/home/claude/fonts/node_modules/@fontsource'
-FONTS=f"""
-@font-face{{font-family:"Pinyon Script";src:url(file://{F}/pinyon-script/files/pinyon-script-latin-400-normal.woff2)}}
-@font-face{{font-family:"Cormorant Garamond";font-weight:400;src:url(file://{F}/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff2)}}
-@font-face{{font-family:"Cormorant Garamond";font-weight:500;src:url(file://{F}/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2)}}
-@font-face{{font-family:"Cormorant Garamond";font-style:italic;font-weight:400;src:url(file://{F}/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff2)}}
-@font-face{{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;src:url(file://{F}/cormorant-garamond/files/cormorant-garamond-latin-500-italic.woff2)}}
-@font-face{{font-family:Jost;font-weight:300;src:url(file://{F}/jost/files/jost-latin-300-normal.woff2)}}
-@font-face{{font-family:Jost;font-weight:400;src:url(file://{F}/jost/files/jost-latin-400-normal.woff2)}}
-"""
-CSS="""
-html,body{overflow:hidden}
-.hero{flex-direction:row;gap:64px;min-height:630px;height:630px;padding:0 64px}
-.kicker,.hint{display:none}.seal{animation:none}
-#og{width:540px;text-align:center;color:#f6edd2}
-#og p{margin:0;font:italic 400 32px/1.2 "Cormorant Garamond",serif;color:#e9d49a}
-#og h2{margin:14px 0 18px;font:400 98px/1.02 "Pinyon Script",cursive;color:#f8f0d8}
-#og h2 i{display:block;font:italic 400 52px/1 "Cormorant Garamond",serif;color:#e0c37a;margin:4px 0}
-#og .d{display:inline-block;padding:12px 26px;border-block:1px solid rgba(233,212,154,.55);font:300 25px/1.3 Jost,sans-serif;color:#efe0b0}
-#og .l{margin-top:14px;font:300 21px/1.3 Jost,sans-serif;color:#cdbf92}
-"""
-JS="""() => {
-  const g = k => document.querySelector('[data-k='+k+']').textContent;
-  document.documentElement.style.setProperty('--S','470px');
-  const og = document.createElement('div'); og.id='og';
-  og.innerHTML = `<p>Você recebeu um convite</p><h2>${g('noiva')}<i>&amp;</i>${g('noivo')}</h2>
-    <div class="d">${g('dia')} de ${g('mesano')}</div><div class="l">${g('local')}</div>`;
-  document.getElementById('hero').appendChild(og);
-}"""
-async def main(src, out):
-    async with async_playwright() as p:
-        b = await p.chromium.launch()
-        pg = await b.new_page(viewport={'width':1200,'height':630})
-        await pg.route('**/fonts.googleapis.com/**', lambda r: r.abort())
-        await pg.goto('file://'+src)
-        await pg.add_style_tag(content=FONTS+CSS)
-        await pg.evaluate(JS)
-        await pg.evaluate('document.fonts.ready'); await pg.wait_for_timeout(600)
-        await pg.screenshot(path=out, type='jpeg', quality=86)
-        await b.close()
-if __name__=='__main__': asyncio.run(main(sys.argv[1], sys.argv[2]))
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fernanda & Thiago — Convite</title>
+<!-- Prévia no WhatsApp/Instagram: o robô do WhatsApp NÃO roda o script, então troque estes textos à mão.
+     A imagem precisa de endereço completo (https://...). -->
+<meta name="description" content="15 de maio de 2027, às 17h · Traffô Eventos (Bisutti), São Paulo. Toque para abrir o seu convite.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fernandaethiago.convidaeu.com.br/">
+<meta property="og:title" content="Fernanda & Thiago — Convite de casamento">
+<meta property="og:description" content="15 de maio de 2027, às 17h · Traffô Eventos (Bisutti), São Paulo. Toque para abrir o seu convite.">
+<meta property="og:image" content="https://fernandaethiago.convidaeu.com.br/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2c2a13">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* VOICE: formal, terno, elegante — pouco texto, muito ar.
+   IDEA: convite de papel perolado com corte a laser, abas que se abrem como um envelope quadrado.
+   PICTURE: o envelope rendado com fita verde-oliva e selo de cera dourado; abre em losango.
+   COLOUR and TYPE: verde-oliva profundo dominante, marfim perolado de apoio, dourado como acento; Pinyon Script nos nomes, Cormorant no texto, Jost nos detalhes.
+   LAYOUT: primeira tela = só o envelope; depois de aberto, uma coluna central de papel marfim. */
+:root{color-scheme:light;--olive:#5f5c28;--olive-d:#2c2a13;--ivory:#f8f1dd;--ivory2:#efe4c3;--gold:#b8913f;--gold-l:#e9d49a;--ink:#3b381e;--S:340px;--os:.56}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth}
+body{margin:0;font-variant-numeric:lining-nums;background:var(--ivory);color:var(--ink);font:400 17px/1.6 "Cormorant Garamond",Georgia,serif;overflow-x:clip}
+body.locked{overflow:hidden;height:100svh}
+
+/* ---------- capa / envelope ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;overflow:hidden;
+  background:radial-gradient(ellipse 70% 60% at 50% 45%,#66622f 0%,#45421f 50%,#2a2812 100%)}
+.kicker{margin:0 0 calc(var(--S)*.15);font:italic 400 21px/1.2 "Cormorant Garamond",serif;color:var(--gold-l);text-align:center}
+.stage{position:relative;width:var(--S);height:var(--S);cursor:pointer;transition:transform 1.5s cubic-bezier(.55,.05,.25,1) .45s;-webkit-tap-highlight-color:transparent}
+.open .stage{transform:scale(var(--os));cursor:default}
+.env{position:absolute;inset:0;perspective:1700px}
+.card{position:absolute;inset:3.5%;display:grid;place-content:center;gap:calc(var(--S)*.025);text-align:center;color:var(--olive);
+  background:linear-gradient(160deg,#fcf8ea,#f0e5c5);border:1px solid rgba(184,145,63,.55);
+  box-shadow:inset 0 0 0 calc(var(--S)*.02) #fcf8ea,inset 0 0 0 calc(var(--S)*.024) rgba(184,145,63,.6),0 10px 30px rgba(0,0,0,.35)}
+.mono{display:flex;align-items:center;justify-content:center;gap:calc(var(--S)*.03);font:italic 500 calc(var(--S)*.12)/1 "Cormorant Garamond",serif}
+.mono i{width:1px;height:calc(var(--S)*.12);background:var(--gold)}
+.card .nm{font:400 calc(var(--S)*.085)/1.15 "Pinyon Script",cursive}
+.card .dt{font:400 calc(var(--S)*.036)/1 Jost,sans-serif;letter-spacing:.12em;color:#7a6a3a}
+.shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#7c7745,#4a4722 80%);transition:opacity .9s .4s}
+.open .shade{opacity:0}
+.flap{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 1.5px 1.5px rgba(30,26,8,.55));
+  transition:transform 1.4s cubic-bezier(.6,.04,.3,1)}
+.flap.t{transform-origin:50% 0}.flap.b{transform-origin:50% 100%}.flap.l{transform-origin:0 50%}.flap.r{transform-origin:100% 50%}
+.open .flap.t{transform:rotateX(180deg);transition-delay:.5s}
+.open .flap.b{transform:rotateX(-180deg);transition-delay:.65s}
+.open .flap.l{transform:rotateY(-180deg);transition-delay:.8s}
+.open .flap.r{transform:rotateY(180deg);transition-delay:.95s}
+.rib{position:absolute;top:50%;height:calc(var(--S)*.115);width:53%;transform:translateY(-50%);transition:transform .9s cubic-bezier(.5,0,.3,1),opacity .9s;
+  background:linear-gradient(180deg,#484619 0%,#6e6a2e 22%,#8a8540 48%,#6a672c 75%,#43411a 100%);box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.rib::before{content:"";position:absolute;inset:3px 0;border-block:1px dashed rgba(233,212,154,.35)}
+.rib.l{left:-3%}.rib.r{right:-3%}
+.opening .rib.l{transform:translate(-115%,-50%);opacity:0}
+.opening .rib.r{transform:translate(115%,-50%);opacity:0}
+.seal{position:absolute;left:50%;top:50%;width:calc(var(--S)*.27);aspect-ratio:1;padding:0;border:0;background:none;cursor:pointer;
+  transform:translate(-50%,-50%);filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));animation:glow 2.6s ease-in-out infinite}
+.seal svg{width:100%;height:100%;display:block}
+.seal:focus-visible{outline:2px solid var(--gold-l);outline-offset:6px;border-radius:50%}
+.opening .seal{animation:pop .7s cubic-bezier(.5,-.4,.6,1) forwards}
+@keyframes glow{50%{transform:translate(-50%,-50%) scale(1.04)}}
+@keyframes pop{30%{transform:translate(-50%,-50%) scale(1.18)}100%{transform:translate(-50%,-50%) scale(0);opacity:0}}
+.hint{margin:calc(var(--S)*.17) 0 0;font:300 15px/1.4 Jost,sans-serif;color:var(--gold-l);text-align:center;animation:breathe 2.4s ease-in-out infinite;transition:opacity .4s}
+.hint a{color:inherit;text-decoration:none}
+@keyframes breathe{50%{opacity:.55}}
+
+/* ---------- convite aberto ---------- */
+main{background:radial-gradient(ellipse at 50% 0%,#fdf9ec,var(--ivory) 60%,#f2e8cc)}
+.lace{display:block;width:100%;height:50px;background:var(--olive-d)}
+.band{max-width:640px;margin:0 auto;padding:clamp(36px,6vw,64px) max(6vw,20px);text-align:center}
+.parents{display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:18px;align-items:center;font:400 15px/1.5 Jost,sans-serif;color:#6b6340}
+.parents i{height:44px;background:var(--gold)}
+.lead{font:italic 400 21px/1.45 "Cormorant Garamond",serif;margin:26px auto 6px;max-width:30ch;text-wrap:balance}
+h1{margin:8px 0 4px;font:400 clamp(52px,14vw,80px)/1.05 "Pinyon Script",cursive;color:var(--olive)}
+h1 span{display:block}h1 .amp{margin:2px 0 6px;font:italic 400 .62em/1 "Cormorant Garamond",serif;color:var(--gold)}
+.date{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;max-width:420px;margin:30px auto 0}
+.date .side{border-block:1px solid var(--gold);padding:9px 0;font:400 15px/1.3 Jost,sans-serif;white-space:nowrap}
+.date .day{font:300 62px/1 Jost,sans-serif;color:var(--olive)}
+.date small{display:block;font:400 15px/1.3 Jost,sans-serif;color:#6b6340}
+h2{margin:0 0 10px;font:400 40px/1.1 "Pinyon Script",cursive;color:var(--olive)}
+.muted{color:#6b6340;margin:0 auto;max-width:36ch}
+.venue{font:500 25px/1.25 "Cormorant Garamond",serif;margin:4px 0 2px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 24px;border-radius:999px;border:1px solid var(--olive);
+  background:var(--olive);color:#fbf5e3;font:500 15px/1 Jost,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn.ghost{background:transparent;color:var(--olive)}
+.btn:hover{background:var(--olive-d);color:#fbf5e3}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:420px;margin:18px auto 0}
+.cd div{background:#fffbf1;border:1px solid rgba(184,145,63,.45);border-radius:6px;padding:12px 4px 8px}
+.cd b{display:block;font:300 28px/1.1 Jost,sans-serif;color:var(--olive)}
+.cd span{font:400 13px/1.6 Jost,sans-serif;color:#6b6340}
+.pix{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:18px}
+.pix code{background:#fffbf1;border:1px dashed var(--gold);border-radius:6px;padding:11px 16px;font:400 15px/1.3 Jost,sans-serif;overflow-wrap:anywhere}
+.rule{width:90px;height:1px;background:var(--gold);margin:0 auto;border:0}
+footer{background:var(--olive-d);color:var(--gold-l);text-align:center;padding:26px 16px 32px;font:300 14px/1.6 Jost,sans-serif}
+footer a{color:#fbf5e3}
+footer small{display:block;opacity:.7;font-size:13px}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .9s,transform .9s}
+.rv.in{opacity:1;transform:none}
+@media(max-width:420px){.date{gap:10px}.date .side{font-size:14px}.date .day{font-size:54px}.parents{font-size:14px;gap:12px}}
+.music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;width:48px;height:48px;border-radius:50%;display:none;place-items:center;padding:0;cursor:pointer;
+  border:1px solid rgba(233,212,154,.6);background:rgba(44,42,19,.85);color:var(--gold-l);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.music.on{display:grid}.music svg{width:22px;height:22px}.music.playing .off{display:none}
+.music:focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01s!important;transition-delay:0s!important;animation:none!important}}
+</style>
+</head>
+<body class="locked">
+
+<!-- definições da renda (padrão de furos do corte a laser, papel perolado e selo) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="paperG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fdf8e8"/><stop offset=".45" stop-color="#efe3bf"/><stop offset=".7" stop-color="#faf3dc"/><stop offset="1" stop-color="#ece0b9"/>
+    </linearGradient>
+    <radialGradient id="sealG" cx=".5" cy=".5" r=".55" fx=".36" fy=".3">
+      <stop offset="0" stop-color="#f6e3a3"/><stop offset=".45" stop-color="#d4ad57"/><stop offset=".85" stop-color="#9c772a"/><stop offset="1" stop-color="#76591c"/>
+    </radialGradient>
+    <pattern id="holes" patternUnits="userSpaceOnUse" width="25" height="25"></pattern>
+    <mask id="lace" maskUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="160">
+      <rect x="-20" y="-20" width="260" height="160" fill="#fff"/><rect x="-20" y="-20" width="260" height="160" fill="url(#holes)"/>
+    </mask>
+    <mask id="laceF" maskUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+      <rect x="-20" y="-20" width="140" height="140" fill="#fff"/><rect x="-20" y="-20" width="140" height="140" fill="url(#holes)"/>
+      <path d="M0 0H100V100H0Z M0 0L100 100 M100 0L0 100" stroke="#fff" stroke-width="5" fill="none"/>
+    </mask>
+  </defs>
+</svg>
+
+<section class="hero" id="hero">
+  <p class="kicker">Você recebeu um convite</p>
+  <div class="stage" id="stage">
+    <div class="env">
+      <div class="card">
+        <div class="mono"><span data-k="i1">F</span><i></i><span data-k="i2">T</span></div>
+        <div class="nm"><span data-k="noiva">Fernanda</span> & <span data-k="noivo">Thiago</span></div>
+        <div class="dt" data-k="dtcurta">15 · 05 · 2027</div>
+      </div>
+      <div class="shade"></div>
+      <svg class="flap l" viewBox="0 0 100 100" aria-hidden="true"><polygon points="0,0 0,100 50,50" fill="url(#paperG)" mask="url(#laceF)"/><polygon points="0,0 0,100 50,50" fill="none" stroke="#c4a35a" stroke-width=".35"/></svg>
+      <svg class="flap r" viewBox="0 0 100 100" aria-hidden="true"><polygon points="100,0 100,100 50,50" fill="url(#paperG)" mask="url(#laceF)"/><polygon points="100,0 100,100 50,50" fill="none" stroke="#c4a35a" stroke-width=".35"/></svg>
+      <svg class="flap t" viewBox="0 0 100 100" aria-hidden="true"><polygon points="0,0 100,0 50,50" fill="url(#paperG)" mask="url(#laceF)"/><polygon points="0,0 100,0 50,50" fill="none" stroke="#c4a35a" stroke-width=".35"/></svg>
+      <svg class="flap b" viewBox="0 0 100 100" aria-hidden="true"><polygon points="0,100 100,100 50,50" fill="url(#paperG)" mask="url(#laceF)"/><polygon points="0,100 100,100 50,50" fill="none" stroke="#c4a35a" stroke-width=".35"/></svg>
+      <div class="rib l"></div><div class="rib r"></div>
+      <button class="seal" id="seal" aria-label="Abrir o convite">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path id="sealPath" d="M50 4A46 46 0 1 1 49.9 4Z" fill="url(#sealG)"/>
+          <circle cx="50" cy="50" r="33" fill="none" stroke="#8a6823" stroke-width="1.6" opacity=".7"/>
+          <circle cx="50" cy="50" r="29.5" fill="none" stroke="#f3dc95" stroke-width=".7" stroke-dasharray="1.5 2" opacity=".8"/>
+          <text x="50" y="60" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="27" fill="#7a5b1d" id="sealTxt">F&amp;T</text>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <p class="hint" id="hint">Toque no selo para abrir</p>
+</section>
+
+<main id="convite">
+  <svg class="lace" viewBox="0 0 200 25" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect width="200" height="25" fill="#f1e6c6" mask="url(#lace)"/></svg>
+
+  <section class="band">
+    <div class="parents rv"><span data-k="paisNoiva">Katia Henaisse Abdon</span><i></i><span data-k="paisNoivo">Marcos Fábio Ribeiro</span></div>
+    <p class="lead rv">convidam para o casamento de seus filhos</p>
+    <h1 class="rv"><span data-k="noiva">Fernanda</span><span class="amp">&</span><span data-k="noivo">Thiago</span></h1>
+    <div class="date rv">
+      <div class="side" data-k="semana">Sábado</div>
+      <div><div class="day" data-k="dia">15</div><small data-k="mesano">maio de 2027</small></div>
+      <div class="side" data-k="hora">às 17h</div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band rv">
+    <h2>Local</h2>
+    <p class="venue" data-k="local">Traffô Eventos (Bisutti)</p>
+    <p class="muted" data-k="endereco">Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP</p>
+    <p class="muted" id="recBox" style="margin-top:14px;font-style:italic" data-k="recepcao">Após a cerimônia, os noivos receberão os convidados no mesmo local.</p>
+    <p class="muted" style="margin-top:18px;font-size:16px">Vai de carro ou de Uber/99? Abra a rota ou copie o endereço:</p>
+    <div class="btns" style="margin-top:12px">
+      <a class="btn" id="mapa" href="#">Google Maps</a>
+      <a class="btn" id="waze" href="#">Waze</a>
+      <button class="btn ghost" id="copyEnd" type="button">Copiar endereço</button>
+      <a class="btn ghost" id="agenda" href="#">Salvar na agenda</a>
+    </div>
+    <div class="cd" id="cd" aria-live="off">
+      <div><b id="cdD">—</b><span>dias</span></div><div><b id="cdH">—</b><span>horas</span></div>
+      <div><b id="cdM">—</b><span>min</span></div><div><b id="cdS">—</b><span>seg</span></div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band rv" id="rsvpSec">
+    <h2>Confirme sua presença</h2>
+    <p class="muted" id="rsvpAteBox">Pedimos que confirme até <span data-k="rsvpAte">22 de abril de 2027</span>.</p>
+    <div class="btns" id="rsvpBtnBox"><a class="btn" id="rsvp" href="#">Confirmar pelo WhatsApp</a></div>
+    <p class="muted" id="trajeBox" style="margin-top:22px">Traje: <span data-k="traje">passeio completo</span></p>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band rv" id="pixSec">
+    <h2>Presentes</h2>
+    <p class="muted">Sua presença é o nosso maior presente. Se quiser nos mimar, deixamos a chave Pix:</p>
+    <div class="pix"><code id="pixKey" data-k="pix">helenaerafael@email.com</code><button class="btn ghost" id="copy" type="button">Copiar</button></div>
+  </section>
+
+  <svg class="lace" viewBox="0 0 200 25" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect width="200" height="25" fill="#f1e6c6" mask="url(#lace)"/></svg>
+  <footer>
+    Convite criado por <a href="https://convidaeu.com.br">Convida&amp;u</a>
+    
+  </footer>
+</main>
+
+<!-- música: toca quando a pessoa toca no selo (o navegador não deixa tocar sozinha) -->
+<audio id="audio" preload="auto" loop></audio>
+<button class="music" id="musicBtn" type="button" aria-label="Pausar música">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path class="off" d="M3 3l18 18"/>
+  </svg>
+</button>
+
+<script>
+{
+  /* ====== DADOS DO CONVITE — troque aqui ====== */
+  const CFG = {
+    noiva: 'Fernanda',
+    noivo: 'Thiago',
+    paisNoiva: 'Katia Henaisse Abdon',
+    paisNoivo: 'Marcos Fábio Ribeiro',
+    inicio: '2027-05-15T17:00:00-03:00',
+    duracaoHoras: 6,
+    local: 'Traffô Eventos (Bisutti)',
+    endereco: 'Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP',
+    recepcao: 'Após a cerimônia, os noivos receberão os convidados no mesmo local.',
+    /* deixe '' (vazio) o que a cliente ainda não mandou: a parte some do convite */
+    traje: '',
+    rsvpAte: '',
+    whatsapp: '',
+    pix: '',
+    musica: 'musica.mp3',   /* arquivo .mp3 na mesma pasta; '' = sem música */
+    musicaInicio: 0         /* segundo da música em que começa a tocar */
+  };
+
+  /* renda: furos do corte a laser (preto = furo) */
+  const holes = document.getElementById('holes');
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); holes.appendChild(e); };
+  /* bloco de 25x25: crisântemo no centro, florzinhas nas bordas, raminhos com folhas nos cantos */
+  const B = '#000', W = '#fff';
+  const ring = (cx, cy, n, dist, rx, ry, off = 0) => { for (let k = 0; k < n; k++) add('ellipse', {cx, cy:cy-dist, rx, ry, fill:B, transform:`rotate(${k*360/n+off} ${cx} ${cy})`}); };
+  const dots = (cx, cy, n, dist, r, off = 0) => { for (let k = 0; k < n; k++) { const a = (k/n + off)*Math.PI*2; add('circle', {cx:cx+dist*Math.cos(a), cy:cy+dist*Math.sin(a), r, fill:B}); } };
+  const C = 12.5;
+  add('circle', {cx:C, cy:C, r:1, fill:B});
+  dots(C, C, 10, 1.9, .32);
+  ring(C, C, 12, 3.8, .7, 1.5);
+  ring(C, C, 20, 7.4, .75, 1.5, 9);
+  dots(C, C, 20, 9.6, .3, 0);
+  for (const [x, y] of [[C,0],[C,25],[0,C],[25,C]]) { add('circle', {cx:x, cy:y, r:.45, fill:B}); ring(x, y, 5, 1.3, .5, .9); }
+  for (const [x, y] of [[0,0],[25,0],[0,25],[25,25]]) {
+    add('circle', {cx:x, cy:y, r:.5, fill:B});
+    for (let k = 0; k < 4; k++) {
+      const t = `rotate(${45+k*90} ${x} ${y})`;
+      add('ellipse', {cx:x, cy:y-3.4, rx:.75, ry:2.2, fill:B, transform:t});
+      add('line', {x1:x, y1:y-1.6, x2:x, y2:y-5.1, stroke:W, 'stroke-width':.22, transform:t});
+      add('ellipse', {cx:x, cy:y-3, rx:.5, ry:1.3, fill:B, transform:`rotate(${k*90} ${x} ${y})`});
+    }
+  }
+
+  /* selo com borda irregular de cera */
+  let d = '';
+  for (let i = 0; i <= 72; i++) {
+    const a = i/72*Math.PI*2, r = 45 + 2.4*Math.sin(a*7+.6) + 1.3*Math.sin(a*13+2) + .8*Math.sin(a*23);
+    d += (i ? 'L' : 'M') + (50+r*Math.cos(a)).toFixed(2) + ' ' + (50+r*Math.sin(a)).toFixed(2);
+  }
+  document.getElementById('sealPath').setAttribute('d', d + 'Z');
+
+  /* datas */
+  const dt = new Date(CFG.inicio);
+  const f = o => new Intl.DateTimeFormat('pt-BR', {timeZone:'America/Sao_Paulo', ...o}).format(dt);
+  const semana = f({weekday:'long'}).split('-')[0];
+  const V = {
+    ...CFG,
+    i1: CFG.noiva[0], i2: CFG.noivo[0],
+    semana: semana[0].toUpperCase() + semana.slice(1),
+    dia: f({day:'numeric'}),
+    mesano: f({month:'long'}) + ' de ' + f({year:'numeric'}),
+    hora: 'às ' + f({hour:'2-digit', minute:'2-digit', hour12:false}).replace(':', 'h').replace(/h00$/, 'h'),
+    dtcurta: [f({day:'2-digit'}), f({month:'2-digit'}), f({year:'numeric'})].join(' · ')
+  };
+  document.querySelectorAll('[data-k]').forEach(el => { const v = V[el.dataset.k]; if (v != null) el.textContent = v; });
+  document.getElementById('sealTxt').textContent = V.i1 + '&' + V.i2;
+  /* campos vazios escondem a parte correspondente */
+  const hide = id => { const el = document.getElementById(id); if (el) el.hidden = true; };
+  if (!CFG.recepcao) hide('recBox');
+  if (!CFG.traje) hide('trajeBox');
+  if (!CFG.rsvpAte) hide('rsvpAteBox');
+  if (!CFG.whatsapp) hide('rsvpBtnBox');
+  if (!CFG.whatsapp && !CFG.rsvpAte && !CFG.traje) { hide('rsvpSec'); }
+  if (!CFG.pix) { hide('pixSec'); }
+  document.querySelectorAll('section[hidden]').forEach(sec => { const hr = sec.previousElementSibling; if (hr && hr.tagName === 'HR') hr.hidden = true; });
+  document.title = `${CFG.noiva} & ${CFG.noivo} — Convite`;
+
+  /* links */
+  const casal = `${CFG.noiva} & ${CFG.noivo}`;
+  document.getElementById('mapa').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CFG.local + ', ' + CFG.endereco);
+  document.getElementById('waze').href = 'https://waze.com/ul?q=' + encodeURIComponent(CFG.endereco) + '&navigate=yes';
+  const iso = x => x.toISOString().replace(/[-:]|\.\d{3}/g, '');
+  const fim = new Date(dt.getTime() + CFG.duracaoHoras*3600e3);
+  document.getElementById('agenda').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Casamento ' + casal) +
+    '&dates=' + iso(dt) + '/' + iso(fim) + '&location=' + encodeURIComponent(CFG.local + ', ' + CFG.endereco);
+  document.getElementById('rsvp').href = 'https://wa.me/' + CFG.whatsapp + '?text=' + encodeURIComponent(`Olá! Quero confirmar presença no casamento de ${casal}.\nNome(s): `);
+
+  /* copiar pix e endereço */
+  const copiar = (btn, texto, alvo) => btn.addEventListener('click', async () => {
+    const rotulo = btn.textContent;
+    try { await navigator.clipboard.writeText(texto()); btn.textContent = 'Copiado!'; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(alvo); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado — copie'; }
+    setTimeout(() => btn.textContent = rotulo, 2200);
+  });
+  copiar(document.getElementById('copy'), () => CFG.pix, document.getElementById('pixKey'));
+  copiar(document.getElementById('copyEnd'), () => CFG.endereco, document.querySelector('.venue + .muted'));
+
+  /* contagem regressiva */
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    let s = Math.max(0, Math.floor((dt - Date.now())/1000));
+    document.getElementById('cdD').textContent = Math.floor(s/86400); s %= 86400;
+    document.getElementById('cdH').textContent = pad(Math.floor(s/3600)); s %= 3600;
+    document.getElementById('cdM').textContent = pad(Math.floor(s/60));
+    document.getElementById('cdS').textContent = pad(s%60);
+  };
+  tick(); setInterval(tick, 1000);
+
+  /* tamanho do envelope */
+  const root = document.documentElement;
+  const size = () => {
+    const S = Math.min(innerWidth*.84, 380, innerHeight*.58);
+    root.style.setProperty('--S', S + 'px');
+    root.style.setProperty('--os', Math.min(.62, innerWidth*.94/(2*S)).toFixed(3));
+  };
+  size(); addEventListener('resize', size);
+
+
+  /* música */
+  const audio = document.getElementById('audio'), mBtn = document.getElementById('musicBtn');
+  let temMusica = !!CFG.musica;
+  if (temMusica) {
+    audio.src = CFG.musica + (CFG.musicaInicio ? '#t=' + CFG.musicaInicio : '');
+    audio.addEventListener('error', () => { temMusica = false; mBtn.classList.remove('on'); });
+  }
+  const marca = tocando => { mBtn.classList.toggle('playing', tocando); mBtn.setAttribute('aria-label', tocando ? 'Pausar música' : 'Tocar música'); };
+  const tocar = () => {
+    if (!temMusica) return;
+    mBtn.classList.add('on');
+    audio.volume = 0;
+    audio.play().then(() => {
+      marca(true);
+      let v = 0; const fade = setInterval(() => { v = Math.min(1, v + .05); audio.volume = v; if (v >= 1) clearInterval(fade); }, 120);
+    }).catch(() => marca(false));
+  };
+  mBtn.addEventListener('click', () => {
+    if (audio.paused) { audio.volume = 1; audio.play().then(() => marca(true)).catch(() => {}); }
+    else { audio.pause(); marca(false); }
+  });
+  let pausadoPorSair = false;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !audio.paused) { audio.pause(); pausadoPorSair = true; marca(false); }
+    else if (!document.hidden && pausadoPorSair) { pausadoPorSair = false; audio.play().then(() => marca(true)).catch(() => {}); }
+  });
+
+  /* abrir */
+  const hero = document.getElementById('hero'), hint = document.getElementById('hint');
+  const reveal = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); } }), {threshold:.15});
+  document.querySelectorAll('.rv').forEach(el => reveal.observe(el));
+  let opened = false;
+  const open = () => {
+    if (opened) return; opened = true;
+    tocar();
+    hint.style.opacity = 0;
+    hero.classList.add('opening');
+    setTimeout(() => hero.classList.add('open'), 450);
+    setTimeout(() => {
+      document.body.classList.remove('locked');
+      hint.innerHTML = '<a href="#convite">Role para ver o convite ↓</a>';
+      hint.style.opacity = 1;
+    }, 2300);
+  };
+  document.getElementById('stage').addEventListener('click', open);
+}
+</script>
+</body>
+</html>
