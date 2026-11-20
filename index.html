@@ -101,6 +101,33 @@ h2{margin:0 0 10px;font:400 40px/1.1 "Pinyon Script",cursive;color:var(--olive)}
 .cd span{font:400 13px/1.6 Jost,sans-serif;color:#6b6340}
 .pix{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:18px}
 .pix code{background:#fffbf1;border:1px dashed var(--gold);border-radius:6px;padding:11px 16px;font:400 15px/1.3 Jost,sans-serif;overflow-wrap:anywhere}
+[hidden]{display:none!important}
+.rsvp{max-width:440px;margin:22px auto 0;text-align:left;display:grid;gap:18px;background:#fffbf1;border:1px solid rgba(184,145,63,.45);border-radius:10px;padding:22px 18px}
+.fld{display:grid;gap:6px;font:400 15px/1.3 Jost,sans-serif;color:#5b5533}
+.fld small,.opts small{color:#8a8160;font-size:13px}
+.rsvp input:not([type=radio]),.rsvp textarea{width:100%;font:400 16px/1.4 Jost,sans-serif;color:var(--ink);background:#fff;border:1px solid rgba(95,92,40,.35);border-radius:8px;padding:11px 12px;min-height:46px;resize:vertical}
+.rsvp input:focus,.rsvp textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.opts{border:0;padding:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.opts legend{font:400 15px/1.3 Jost,sans-serif;color:#5b5533;margin-bottom:6px;padding:0}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:flex;align-items:center;justify-content:center;min-height:46px;padding:4px 6px;border:1px solid rgba(95,92,40,.4);border-radius:8px;font:400 15px/1.2 Jost,sans-serif;color:var(--olive);text-align:center;cursor:pointer}
+.opts input:checked+span{background:var(--olive);border-color:var(--olive);color:#fbf5e3}
+.opts input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.step{display:flex;align-items:center;gap:16px}
+.step button{width:46px;height:46px;border-radius:50%;border:1px solid var(--olive);background:transparent;color:var(--olive);font:300 26px/1 Jost,sans-serif;cursor:pointer}
+.step button:disabled{opacity:.3;cursor:default}
+.step button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.step output{min-width:2ch;text-align:center;font:300 30px/1 Jost,sans-serif;color:var(--olive)}
+#nomesAcomp{display:grid;gap:8px}
+.err{margin:0;color:#9a3b25;font:400 14px/1.4 Jost,sans-serif}
+.rsvp .btn{width:100%}
+.gifts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+.gift{display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 10px 14px;background:#fffbf1;border:1px solid rgba(184,145,63,.45);border-radius:10px}
+.gift h3{margin:0;font:500 19px/1.2 "Cormorant Garamond",serif;color:var(--ink);text-wrap:balance}
+.gift p{margin:0 0 8px;font:300 17px/1.3 Jost,sans-serif;color:var(--olive);white-space:nowrap}
+.gift .btn{margin-top:auto;min-height:44px;padding:0 18px;font-size:14px}
+@media(min-width:640px){.gifts{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .rule{width:90px;height:1px;background:var(--gold);margin:0 auto;border:0}
 footer{background:var(--olive-d);color:var(--gold-l);text-align:center;padding:26px 16px 32px;font:300 14px/1.6 Jost,sans-serif}
 footer a{color:#fbf5e3}
@@ -108,6 +135,10 @@ footer small{display:block;opacity:.7;font-size:13px}
 .rv{opacity:0;transform:translateY(16px);transition:opacity .9s,transform .9s}
 .rv.in{opacity:1;transform:none}
 @media(max-width:420px){.date{gap:10px}.date .side{font-size:14px}.date .day{font-size:54px}.parents{font-size:14px;gap:12px}}
+.music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;width:48px;height:48px;border-radius:50%;display:none;place-items:center;padding:0;cursor:pointer;
+  border:1px solid rgba(233,212,154,.6);background:rgba(44,42,19,.85);color:var(--gold-l);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.music.on{display:grid}.music svg{width:22px;height:22px}.music.playing .off{display:none}
+.music:focus-visible{outline:2px solid var(--gold-l);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01s!important;transition-delay:0s!important;animation:none!important}}
 </style>
 </head>
@@ -182,8 +213,11 @@ footer small{display:block;opacity:.7;font-size:13px}
     <p class="venue" data-k="local">Traffô Eventos (Bisutti)</p>
     <p class="muted" data-k="endereco">Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP</p>
     <p class="muted" id="recBox" style="margin-top:14px;font-style:italic" data-k="recepcao">Após a cerimônia, os noivos receberão os convidados no mesmo local.</p>
-    <div class="btns">
-      <a class="btn" id="mapa" href="#">Ver no mapa</a>
+    <p class="muted" style="margin-top:18px;font-size:16px">Vai de carro ou de Uber/99? Abra a rota ou copie o endereço:</p>
+    <div class="btns" style="margin-top:12px">
+      <a class="btn" id="mapa" href="#">Google Maps</a>
+      <a class="btn" id="waze" href="#">Waze</a>
+      <button class="btn ghost" id="copyEnd" type="button">Copiar endereço</button>
       <a class="btn ghost" id="agenda" href="#">Salvar na agenda</a>
     </div>
     <div class="cd" id="cd" aria-live="off">
@@ -196,8 +230,22 @@ footer small{display:block;opacity:.7;font-size:13px}
 
   <section class="band rv" id="rsvpSec">
     <h2>Confirme sua presença</h2>
-    <p class="muted" id="rsvpAteBox">Pedimos que confirme até <span data-k="rsvpAte">22 de abril de 2027</span>.</p>
-    <div class="btns" id="rsvpBtnBox"><a class="btn" id="rsvp" href="#">Confirmar pelo WhatsApp</a></div>
+    <p class="muted" id="rsvpAteBox">Pedimos que confirme até <span data-k="rsvpAte"></span>.</p>
+    <form class="rsvp" id="rsvpForm" novalidate>
+      <label class="fld"><span>Seu nome completo</span><input id="fNome" autocomplete="name" required></label>
+      <fieldset class="opts"><legend>Você vai?</legend>
+        <label><input type="radio" name="vai" value="sim" checked><span>Sim, estarei lá</span></label>
+        <label><input type="radio" name="vai" value="nao"><span>Não poderei ir</span></label>
+      </fieldset>
+      <div class="fld" id="acompBox">
+        <span>Acompanhantes <small>(até <b data-k="maxAcompanhantes">5</b> pessoas)</small></span>
+        <div class="step"><button type="button" id="menos" aria-label="Remover acompanhante">−</button><output id="nAcomp" aria-live="polite">0</output><button type="button" id="mais" aria-label="Adicionar acompanhante">+</button></div>
+        <div id="nomesAcomp"></div>
+      </div>
+      <label class="fld"><span>Mensagem para os noivos <small>(opcional)</small></span><textarea id="fMsg" rows="3"></textarea></label>
+      <p class="err" id="fErr" hidden>Escreva seu nome para enviar a confirmação.</p>
+      <a class="btn" id="rsvp" href="#">Enviar confirmação pelo WhatsApp</a>
+    </form>
     <p class="muted" id="trajeBox" style="margin-top:22px">Traje: <span data-k="traje">passeio completo</span></p>
   </section>
 
@@ -205,8 +253,12 @@ footer small{display:block;opacity:.7;font-size:13px}
 
   <section class="band rv" id="pixSec">
     <h2>Presentes</h2>
-    <p class="muted">Sua presença é o nosso maior presente. Se quiser nos mimar, deixamos a chave Pix:</p>
-    <div class="pix"><code id="pixKey" data-k="pix">helenaerafael@email.com</code><button class="btn ghost" id="copy" type="button">Copiar</button></div>
+    <p class="muted">Sua presença é o nosso maior presente. Se quiser nos mimar, separamos algumas sugestões:</p>
+    <div class="gifts" id="gifts"></div>
+    <div id="pixBox">
+      <p class="muted" style="margin-top:24px">Ou, se preferir, um Pix de qualquer valor:</p>
+      <div class="pix"><code id="pixKey" data-k="pix"></code><button class="btn ghost" id="copy" type="button">Copiar</button></div>
+    </div>
   </section>
 
   <svg class="lace" viewBox="0 0 200 25" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect width="200" height="25" fill="#f1e6c6" mask="url(#lace)"/></svg>
@@ -215,6 +267,14 @@ footer small{display:block;opacity:.7;font-size:13px}
     
   </footer>
 </main>
+
+<!-- música: toca quando a pessoa toca no selo (o navegador não deixa tocar sozinha) -->
+<audio id="audio" preload="auto" loop></audio>
+<button class="music" id="musicBtn" type="button" aria-label="Pausar música">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path class="off" d="M3 3l18 18"/>
+  </svg>
+</button>
 
 <script>
 {
@@ -232,8 +292,20 @@ footer small{display:block;opacity:.7;font-size:13px}
     /* deixe '' (vazio) o que a cliente ainda não mandou: a parte some do convite */
     traje: '',
     rsvpAte: '',
-    whatsapp: '',
-    pix: ''
+    whatsapp: '5511971708440',   /* recebe as confirmações e os pedidos de presente */
+    maxAcompanhantes: 5,
+    pix: '',
+    /* sugestões de presente — EXEMPLOS, confirme itens e valores com a cliente */
+    presentes: [
+      { nome: 'Café da manhã na cama', valor: 80 },
+      { nome: 'Jogo de taças', valor: 120 },
+      { nome: 'Jantar romântico na lua de mel', valor: 150 },
+      { nome: 'Passeio na lua de mel', valor: 250 },
+      { nome: 'Air fryer', valor: 400 },
+      { nome: 'Noite de hotel na lua de mel', valor: 500 }
+    ],
+    musica: 'musica.mp3',   /* arquivo .mp3 na mesma pasta; '' = sem música */
+    musicaInicio: 0         /* segundo da música em que começa a tocar */
   };
 
   /* renda: furos do corte a laser (preto = furo) */
@@ -289,28 +361,82 @@ footer small{display:block;opacity:.7;font-size:13px}
   if (!CFG.recepcao) hide('recBox');
   if (!CFG.traje) hide('trajeBox');
   if (!CFG.rsvpAte) hide('rsvpAteBox');
-  if (!CFG.whatsapp) hide('rsvpBtnBox');
-  if (!CFG.whatsapp && !CFG.rsvpAte && !CFG.traje) { hide('rsvpSec'); }
-  if (!CFG.pix) { hide('pixSec'); }
+  const presentes = CFG.presentes || [];
+  if (!CFG.whatsapp) hide('rsvpForm');
+  if (!CFG.maxAcompanhantes) hide('acompBox');
+  if (!CFG.whatsapp && !CFG.traje) hide('rsvpSec');
+  if (!CFG.pix) hide('pixBox');
+  if (!CFG.pix && !presentes.length) hide('pixSec');
   document.querySelectorAll('section[hidden]').forEach(sec => { const hr = sec.previousElementSibling; if (hr && hr.tagName === 'HR') hr.hidden = true; });
   document.title = `${CFG.noiva} & ${CFG.noivo} — Convite`;
 
   /* links */
   const casal = `${CFG.noiva} & ${CFG.noivo}`;
   document.getElementById('mapa').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CFG.local + ', ' + CFG.endereco);
+  document.getElementById('waze').href = 'https://waze.com/ul?q=' + encodeURIComponent(CFG.endereco) + '&navigate=yes';
   const iso = x => x.toISOString().replace(/[-:]|\.\d{3}/g, '');
   const fim = new Date(dt.getTime() + CFG.duracaoHoras*3600e3);
   document.getElementById('agenda').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Casamento ' + casal) +
     '&dates=' + iso(dt) + '/' + iso(fim) + '&location=' + encodeURIComponent(CFG.local + ', ' + CFG.endereco);
-  document.getElementById('rsvp').href = 'https://wa.me/' + CFG.whatsapp + '?text=' + encodeURIComponent(`Olá! Quero confirmar presença no casamento de ${casal}.\nNome(s): `);
+  const wa = texto => 'https://wa.me/' + CFG.whatsapp + '?text=' + encodeURIComponent(texto);
 
-  /* copiar pix */
-  const copyBtn = document.getElementById('copy');
-  copyBtn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(CFG.pix); copyBtn.textContent = 'Copiado!'; }
-    catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('pixKey')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = 'Selecionado — copie'; }
-    setTimeout(() => copyBtn.textContent = 'Copiar', 2200);
+  /* sugestões de presente */
+  const brl = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits: v % 1 ? 2 : 0});
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('gifts').innerHTML = presentes.map(g => `<div class="gift"><h3>${esc(g.nome)}</h3><p>${brl(g.valor)}</p>` +
+    (CFG.whatsapp ? `<a class="btn ghost" href="${wa(`Olá, ${CFG.noiva} e ${CFG.noivo}! Gostaria de presentear vocês com: ${g.nome} (${brl(g.valor)}). Como faço?`)}">Presentear</a>` : '') + '</div>').join('');
+
+  /* confirmação de presença */
+  const form = document.getElementById('rsvpForm'), fNome = document.getElementById('fNome'), fMsg = document.getElementById('fMsg');
+  const box = document.getElementById('nomesAcomp'), out = document.getElementById('nAcomp');
+  const menos = document.getElementById('menos'), mais = document.getElementById('mais');
+  const rsvpBtn = document.getElementById('rsvp'), fErr = document.getElementById('fErr');
+  const maxA = CFG.maxAcompanhantes || 0;
+  let nA = 0;
+  const vai = () => form.querySelector('input[name=vai]:checked').value === 'sim';
+  const montar = () => {
+    const nomes = [...box.querySelectorAll('input')].map((i, k) => i.value.trim() || `Acompanhante ${k+1} (nome não informado)`);
+    let t = `*Confirmação de presença*\nCasamento ${casal}\n\nNome: ${fNome.value.trim()}\nPresença: ${vai() ? 'Sim, estarei lá' : 'Não poderei ir'}`;
+    if (vai() && maxA) {
+      t += `\nAcompanhantes: ${nA}`;
+      nomes.forEach(n => t += `\n- ${n}`);
+      t += `\nTotal de pessoas: ${nA + 1}`;
+    }
+    if (fMsg.value.trim()) t += `\n\nMensagem: ${fMsg.value.trim()}`;
+    return t;
+  };
+  const atualizar = () => {
+    while (box.children.length < nA) {
+      const i = document.createElement('input');
+      i.placeholder = `Nome do acompanhante ${box.children.length + 1}`; i.setAttribute('aria-label', i.placeholder); i.autocomplete = 'off';
+      box.appendChild(i);
+    }
+    while (box.children.length > nA) box.lastElementChild.remove();
+    out.textContent = nA; menos.disabled = nA <= 0; mais.disabled = nA >= maxA;
+    document.getElementById('acompBox').hidden = !vai() || !maxA;
+    rsvpBtn.href = wa(montar());
+    if (fNome.value.trim()) fErr.hidden = true;
+  };
+  menos.addEventListener('click', () => { if (nA > 0) { nA--; atualizar(); } });
+  mais.addEventListener('click', () => { if (nA < maxA) { nA++; atualizar(); box.lastElementChild.focus(); } });
+  form.addEventListener('input', atualizar); form.addEventListener('change', atualizar);
+  form.addEventListener('submit', e => e.preventDefault());
+  rsvpBtn.addEventListener('click', e => {
+    rsvpBtn.href = wa(montar());
+    if (!fNome.value.trim()) { e.preventDefault(); fErr.hidden = false; fNome.focus(); }
+    else fErr.hidden = true;
   });
+  atualizar();
+
+  /* copiar pix e endereço */
+  const copiar = (btn, texto, alvo) => btn.addEventListener('click', async () => {
+    const rotulo = btn.textContent;
+    try { await navigator.clipboard.writeText(texto()); btn.textContent = 'Copiado!'; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(alvo); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado — copie'; }
+    setTimeout(() => btn.textContent = rotulo, 2200);
+  });
+  copiar(document.getElementById('copy'), () => CFG.pix, document.getElementById('pixKey'));
+  copiar(document.getElementById('copyEnd'), () => CFG.endereco, document.querySelector('.venue + .muted'));
 
   /* contagem regressiva */
   const pad = n => String(n).padStart(2, '0');
@@ -332,6 +458,34 @@ footer small{display:block;opacity:.7;font-size:13px}
   };
   size(); addEventListener('resize', size);
 
+
+  /* música */
+  const audio = document.getElementById('audio'), mBtn = document.getElementById('musicBtn');
+  let temMusica = !!CFG.musica;
+  if (temMusica) {
+    audio.src = CFG.musica + (CFG.musicaInicio ? '#t=' + CFG.musicaInicio : '');
+    audio.addEventListener('error', () => { temMusica = false; mBtn.classList.remove('on'); });
+  }
+  const marca = tocando => { mBtn.classList.toggle('playing', tocando); mBtn.setAttribute('aria-label', tocando ? 'Pausar música' : 'Tocar música'); };
+  const tocar = () => {
+    if (!temMusica) return;
+    mBtn.classList.add('on');
+    audio.volume = 0;
+    audio.play().then(() => {
+      marca(true);
+      let v = 0; const fade = setInterval(() => { v = Math.min(1, v + .05); audio.volume = v; if (v >= 1) clearInterval(fade); }, 120);
+    }).catch(() => marca(false));
+  };
+  mBtn.addEventListener('click', () => {
+    if (audio.paused) { audio.volume = 1; audio.play().then(() => marca(true)).catch(() => {}); }
+    else { audio.pause(); marca(false); }
+  });
+  let pausadoPorSair = false;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !audio.paused) { audio.pause(); pausadoPorSair = true; marca(false); }
+    else if (!document.hidden && pausadoPorSair) { pausadoPorSair = false; audio.play().then(() => marca(true)).catch(() => {}); }
+  });
+
   /* abrir */
   const hero = document.getElementById('hero'), hint = document.getElementById('hint');
   const reveal = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); } }), {threshold:.15});
@@ -339,6 +493,7 @@ footer small{display:block;opacity:.7;font-size:13px}
   let opened = false;
   const open = () => {
     if (opened) return; opened = true;
+    tocar();
     hint.style.opacity = 0;
     hero.classList.add('opening');
     setTimeout(() => hero.classList.add('open'), 450);
