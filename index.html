@@ -6,11 +6,11 @@
 <title>Fernanda & Thiago — Convite</title>
 <!-- Prévia no WhatsApp/Instagram: o robô do WhatsApp NÃO roda o script, então troque estes textos à mão.
      A imagem precisa de endereço completo (https://...). -->
-<meta name="description" content="15 de maio de 2027, às 17h · Traffô Eventos (Bisutti), São Paulo. Toque para abrir o seu convite.">
+<meta name="description" content="15 de maio de 2027, às 16h · Bisutti Traffô, São Paulo. Toque para abrir o seu convite.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fernandaethiago.convidaeu.com.br/">
 <meta property="og:title" content="Fernanda & Thiago — Convite de casamento">
-<meta property="og:description" content="15 de maio de 2027, às 17h · Traffô Eventos (Bisutti), São Paulo. Toque para abrir o seu convite.">
+<meta property="og:description" content="15 de maio de 2027, às 16h · Bisutti Traffô, São Paulo. Toque para abrir o seu convite.">
 <meta property="og:image" content="https://fernandaethiago.convidaeu.com.br/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -81,6 +81,7 @@ main{background:radial-gradient(ellipse at 50% 0%,#fdf9ec,var(--ivory) 60%,#f2e8
 .lace{display:block;width:100%;height:64px;background:var(--olive-d)}
 .band{max-width:640px;margin:0 auto;padding:clamp(36px,6vw,64px) max(6vw,20px);text-align:center}
 .parents{display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:18px;align-items:center;font:400 15px/1.5 Jost,sans-serif;color:#6b6340}
+.parents span{white-space:pre-line}
 .parents i{height:44px;background:var(--gold)}
 .lead{font:italic 400 21px/1.45 "Cormorant Garamond",serif;margin:26px auto 6px;max-width:30ch;text-wrap:balance}
 h1{margin:8px 0 4px;font:400 clamp(52px,14vw,80px)/1.05 "Pinyon Script",cursive;color:var(--olive)}
@@ -227,13 +228,14 @@ footer small{display:block;opacity:.7;font-size:13px}
 
   <section class="band">
     <svg class="logo-top rv" viewBox="0 0 100 100" role="img" aria-label="Monograma dos noivos"><rect width="100" height="100" fill="#5c6618" mask="url(#logoM)"/></svg>
-    <div class="parents rv"><span data-k="paisNoiva">Katia Henaisse Abdon</span><i></i><span data-k="paisNoivo">Marcos Fábio Ribeiro</span></div>
-    <p class="lead rv">convidam para o casamento de seus filhos</p>
+    <div class="parents rv"><span data-k="paisNoiva">Katia Henaisse Abdon</span><i></i><span data-k="paisNoivo">Rodrigo Ezequiel
+Luciana Pavam</span></div>
+    <p class="lead rv">convidam para a cerimônia de casamento de seus filhos</p>
     <h1 class="rv"><span data-k="noiva">Fernanda</span><span class="amp">&</span><span data-k="noivo">Thiago</span></h1>
     <div class="date rv">
       <div class="side" data-k="semana">Sábado</div>
       <div><div class="day" data-k="dia">15</div><small data-k="mesano">maio de 2027</small></div>
-      <div class="side" data-k="hora">às 17h</div>
+      <div class="side" data-k="hora">às 16h</div>
     </div>
   </section>
 
@@ -241,9 +243,9 @@ footer small{display:block;opacity:.7;font-size:13px}
 
   <section class="band rv">
     <h2>Local</h2>
-    <p class="venue" data-k="local">Traffô Eventos (Bisutti)</p>
+    <p class="venue" data-k="local">Bisutti Traffô</p>
     <p class="muted" data-k="endereco">Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP</p>
-    <p class="muted" id="recBox" style="margin-top:14px;font-style:italic" data-k="recepcao">Após a cerimônia, os noivos receberão os convidados no mesmo local.</p>
+    <p class="muted" id="recBox" style="margin-top:14px;font-style:italic" data-k="recepcao">Após a cerimônia, os noivos recepcionarão os convidados no mesmo local.</p>
     <p class="muted" style="margin-top:18px;font-size:16px">Vai de carro ou de Uber/99? Abra a rota ou copie o endereço:</p>
     <div class="btns" style="margin-top:12px">
       <a class="btn" id="mapa" href="#">Google Maps</a>
@@ -320,12 +322,12 @@ footer small{display:block;opacity:.7;font-size:13px}
     noiva: 'Fernanda',
     noivo: 'Thiago',
     paisNoiva: 'Katia Henaisse Abdon',
-    paisNoivo: 'Marcos Fábio Ribeiro',
-    inicio: '2027-05-15T17:00:00-03:00',
+    paisNoivo: 'Rodrigo Ezequiel\nLuciana Pavam',
+    inicio: '2027-05-15T16:00:00-03:00',
     duracaoHoras: 6,
-    local: 'Traffô Eventos (Bisutti)',
+    local: 'Bisutti Traffô',
     endereco: 'Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP',
-    recepcao: 'Após a cerimônia, os noivos receberão os convidados no mesmo local.',
+    recepcao: 'Após a cerimônia, os noivos recepcionarão os convidados no mesmo local.',
     /* deixe '' (vazio) o que a cliente ainda não mandou: a parte some do convite */
     traje: '',
     rsvpAte: '',
