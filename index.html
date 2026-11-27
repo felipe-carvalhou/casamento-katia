@@ -36,6 +36,8 @@ body.locked{overflow:hidden;height:100svh}
 /* ---------- capa / envelope ---------- */
 .hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;overflow:hidden;
   background:radial-gradient(ellipse 80% 70% at 50% 40%,#f6f2ed 0%,#ebe5de 55%,#ddd5cb 100%)}
+.hero{position:relative}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(rgba(248,241,221,0),#fbf6e6);pointer-events:none}
 .kicker{margin:0 0 calc(var(--S)*.15);font:italic 400 22px/1.2 "Cormorant Garamond",serif;color:var(--olive);text-align:center}
 .stage{position:relative;width:var(--S);height:var(--S);cursor:pointer;transition:transform 1.5s cubic-bezier(.55,.05,.25,1) .45s;-webkit-tap-highlight-color:transparent}
 .open .stage{transform:scale(var(--os));cursor:default}
@@ -77,7 +79,7 @@ body.locked{overflow:hidden;height:100svh}
 @keyframes breathe{50%{opacity:.55}}
 
 /* ---------- convite aberto ---------- */
-main{background:radial-gradient(ellipse at 50% 0%,#fdf9ec,var(--ivory) 60%,#f2e8cc)}
+main{background:linear-gradient(#fbf6e6,var(--ivory) 35%,#f2e8cc)}
 .lace{display:block;width:100%;height:64px;background:var(--olive-d)}
 .band{max-width:640px;margin:0 auto;padding:clamp(36px,6vw,64px) max(6vw,20px);text-align:center}
 .parents{display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:18px;align-items:center;font:400 15px/1.5 Jost,sans-serif;color:#6b6340}
@@ -126,6 +128,12 @@ h2{margin:0 0 10px;font:400 40px/1.1 "Pinyon Script",cursive;color:var(--olive)}
 #nomesAcomp{display:grid;gap:8px}
 .err{margin:0;color:#9a3b25;font:400 14px/1.4 Jost,sans-serif}
 .rsvp .btn{width:100%}
+.rsvp .btn[aria-disabled=true]{opacity:.6;pointer-events:none}
+.err a{color:inherit;font-weight:500}
+.rsvp-ok{max-width:440px;margin:22px auto 0;padding:26px 18px 20px;background:#fffbf1;border:1px solid rgba(92,102,24,.35);border-radius:10px;text-align:center}
+.ok-t{margin:0 0 6px;font:400 38px/1.1 "Pinyon Script",cursive;color:var(--olive)}
+.ok-x{margin:0 auto 12px;max-width:32ch;font:400 16px/1.5 Jost,sans-serif;color:#5b5533}
+.ok-l{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px}
 .carousel{position:relative;margin:22px calc(-1*max(6vw,20px)) 0}
 .gifts{display:grid;grid-auto-flow:column;grid-auto-columns:min(46%,200px);gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
   padding:4px max(6vw,20px) 14px;scroll-padding-inline:max(6vw,20px);scrollbar-width:thin;scrollbar-color:rgba(92,102,24,.35) transparent;-webkit-overflow-scrolling:touch}
@@ -243,7 +251,6 @@ footer small{display:block;opacity:.7;font-size:13px}
 </section>
 
 <main id="convite">
-  <svg class="lace" viewBox="0 -10 120 20" preserveAspectRatio="xMinYMid slice" aria-hidden="true"><rect x="-50" y="-50" width="1900" height="100" fill="#f1e6c6" mask="url(#lace)"/></svg>
 
   <section class="band">
     <svg class="logo-top rv" viewBox="0 0 100 100" role="img" aria-label="Monograma dos noivos"><rect width="100" height="100" fill="#5c6618" mask="url(#logoM)"/></svg>
@@ -294,10 +301,16 @@ Luciana Pavam</span></div>
         <div class="step"><button type="button" id="menos" aria-label="Remover acompanhante">−</button><output id="nAcomp" aria-live="polite">0</output><button type="button" id="mais" aria-label="Adicionar acompanhante">+</button></div>
         <div id="nomesAcomp"></div>
       </div>
-      <label class="fld"><span>Mensagem para os noivos <small>(opcional)</small></span><textarea id="fMsg" rows="3"></textarea></label>
+      <label class="fld"><span>Seu WhatsApp <small>(opcional)</small></span><input id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000"></label>
+      <label class="fld"><span>Recado para os noivos <small>(opcional)</small></span><textarea id="fMsg" rows="3"></textarea></label>
       <p class="err" id="fErr" hidden>Escreva seu nome para enviar a confirmação.</p>
       <a class="btn" id="rsvp" href="#">Enviar confirmação pelo WhatsApp</a>
     </form>
+    <div class="rsvp-ok" id="rsvpOk" role="status" hidden>
+      <p class="ok-t" id="okTitle">Presença confirmada!</p>
+      <p class="ok-x" id="okText"></p>
+      <div class="ok-l"><a class="linkbtn" id="okWa" href="#">Avisar também pelo WhatsApp</a><button class="linkbtn" id="okEdit" type="button">Corrigir resposta</button></div>
+    </div>
     <p class="muted" id="trajeBox" style="margin-top:22px">Traje: <span data-k="traje">passeio completo</span></p>
   </section>
 
@@ -315,8 +328,6 @@ Luciana Pavam</span></div>
       <div class="pix"><code id="pixKey" data-k="pix"></code><button class="btn ghost" id="copy" type="button">Copiar</button></div>
     </div>
   </section>
-
-  <svg class="lace" viewBox="0 -10 120 20" preserveAspectRatio="xMinYMid slice" aria-hidden="true"><rect x="-50" y="-50" width="1900" height="100" fill="#f1e6c6" mask="url(#lace)"/></svg>
   <footer>
     Convite criado por <a href="https://convidaeu.com.br">Convida&amp;u</a>
     
@@ -371,6 +382,7 @@ Luciana Pavam</span></div>
     /* deixe '' (vazio) o que a cliente ainda não mandou: a parte some do convite */
     traje: '',
     rsvpAte: '',
+    planilha: 'https://script.google.com/macros/s/AKfycbwIxuAmACc-j3kQsFjHNLE9Ivxh6uFcEkhPgMwRKF2utfFsMtqb4RGuixX9bQk2Ru1D/exec',   /* link do Apps Script (termina em /exec); vazio = confirmação vai só pelo WhatsApp */
     whatsapp: '5511985564721',   /* recebe as confirmações e os avisos de presente */
     maxAcompanhantes: 5,
     pix: 'fernanda.abdon17@gmail.com',
@@ -500,9 +512,9 @@ Luciana Pavam</span></div>
   if (!CFG.traje) hide('trajeBox');
   if (!CFG.rsvpAte) hide('rsvpAteBox');
   const presentes = CFG.presentes || [];
-  if (!CFG.whatsapp) hide('rsvpForm');
+  if (!CFG.whatsapp && !CFG.planilha) hide('rsvpForm');
   if (!CFG.maxAcompanhantes) hide('acompBox');
-  if (!CFG.whatsapp && !CFG.traje) hide('rsvpSec');
+  if (!CFG.whatsapp && !CFG.planilha && !CFG.traje) hide('rsvpSec');
   if (!CFG.pix) hide('pixBox');
   if (!CFG.pix && !presentes.length) hide('pixSec');
   document.querySelectorAll('section[hidden]').forEach(sec => { const hr = sec.previousElementSibling; if (hr && hr.tagName === 'HR') hr.hidden = true; });
@@ -558,7 +570,12 @@ Luciana Pavam</span></div>
   shBg.addEventListener('click', fecharPresente);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) fecharPresente(); });
   shNome.addEventListener('input', () => { shWa.href = wa(msgPresente()); });
-  shWa.addEventListener('click', () => { shWa.href = wa(msgPresente()); });
+  shWa.addEventListener('click', () => {
+    shWa.href = wa(msgPresente());
+    if (CFG.planilha) try {   /* registra o presente no painel da família */
+      fetch(CFG.planilha, {method: 'POST', keepalive: true, body: JSON.stringify({tipo: 'presente', nome: shNome.value.trim(), presente: atual.nome, valor: atual.valor})}).catch(() => {});
+    } catch (e) {}
+  });
 
   /* carrossel da lista */
   const gl = document.getElementById('gifts'), gPrev = document.getElementById('gPrev'), gNext = document.getElementById('gNext'), gInfo = document.getElementById('gInfo');
@@ -611,10 +628,49 @@ Luciana Pavam</span></div>
   mais.addEventListener('click', () => { if (nA < maxA) { nA++; atualizar(); box.lastElementChild.focus(); } });
   form.addEventListener('input', atualizar); form.addEventListener('change', atualizar);
   form.addEventListener('submit', e => e.preventDefault());
-  rsvpBtn.addEventListener('click', e => {
+  const fTel = document.getElementById('fTel'), okBox = document.getElementById('rsvpOk');
+  const usaPlanilha = !!CFG.planilha;
+  const rotuloBtn = usaPlanilha ? 'Confirmar presença' : rsvpBtn.textContent;
+  rsvpBtn.textContent = rotuloBtn;
+  let enviando = false;
+  const erro = (msg, comWhats) => {
+    fErr.textContent = msg;
+    if (comWhats && CFG.whatsapp) { fErr.append(' '); const a = document.createElement('a'); a.href = wa(montar()); a.textContent = 'Confirmar pelo WhatsApp'; fErr.append(a); }
+    fErr.hidden = false;
+  };
+  const sucesso = d => {
+    const primeiro = d.nome.split(/\s+/)[0], pessoas = d.vai ? 1 + d.qtdAcompanhantes : 0;
+    document.getElementById('okTitle').textContent = d.vai ? 'Presença confirmada!' : 'Obrigado por avisar';
+    document.getElementById('okText').textContent = d.vai
+      ? `Que alegria, ${primeiro}! ` + (pessoas > 1 ? `Sua confirmação é para ${pessoas} pessoas.` : 'Estamos te esperando.')
+      : `Sentiremos sua falta, ${primeiro}. Obrigado pelo carinho!`;
+    const okWa = document.getElementById('okWa'); okWa.href = wa(montar()); okWa.hidden = !CFG.whatsapp;
+    form.hidden = true; okBox.hidden = false; okBox.scrollIntoView({block: 'center', behavior: 'smooth'});
+  };
+  document.getElementById('okEdit').addEventListener('click', () => { okBox.hidden = true; form.hidden = false; fNome.focus(); });
+  rsvpBtn.addEventListener('click', async e => {
     rsvpBtn.href = wa(montar());
-    if (!fNome.value.trim()) { e.preventDefault(); fErr.hidden = false; fNome.focus(); }
-    else fErr.hidden = true;
+    if (!fNome.value.trim()) { e.preventDefault(); erro('Escreva seu nome para enviar a confirmação.'); fNome.focus(); return; }
+    fErr.hidden = true;
+    if (!usaPlanilha) return;            /* sem planilha: o link abre o WhatsApp */
+    e.preventDefault();
+    if (enviando) return;
+    enviando = true; rsvpBtn.textContent = 'Enviando…'; rsvpBtn.setAttribute('aria-disabled', 'true');
+    const d = {
+      tipo: 'rsvp', nome: fNome.value.trim(), vai: vai(),
+      qtdAcompanhantes: vai() ? nA : 0, acompanhantes: vai() ? [...box.querySelectorAll('input')].map(i => i.value.trim()) : [],
+      whatsapp: fTel.value.trim(), recado: fMsg.value.trim()
+    };
+    try {
+      const r = await fetch(CFG.planilha, {method: 'POST', body: JSON.stringify(d)});
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.erro || 'falhou');
+      sucesso(d);
+    } catch (err) {
+      erro('Não conseguimos enviar agora. Tente de novo em instantes ou', true);
+    } finally {
+      enviando = false; rsvpBtn.textContent = rotuloBtn; rsvpBtn.removeAttribute('aria-disabled');
+    }
   });
   atualizar();
 
