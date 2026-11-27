@@ -6,11 +6,11 @@
 <title>Fernanda & Thiago — Convite</title>
 <!-- Prévia no WhatsApp/Instagram: o robô do WhatsApp NÃO roda o script, então troque estes textos à mão.
      A imagem precisa de endereço completo (https://...). -->
-<meta name="description" content="15 de maio de 2027, às 16h · Bisutti Traffô, São Paulo. Toque para abrir o seu convite.">
+<meta name="description" content="15 de maio de 2027, às 16h · Traffô, São Paulo. Toque para abrir o seu convite.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fernandaethiago.convidaeu.com.br/">
 <meta property="og:title" content="Fernanda & Thiago — Convite de casamento">
-<meta property="og:description" content="15 de maio de 2027, às 16h · Bisutti Traffô, São Paulo. Toque para abrir o seu convite.">
+<meta property="og:description" content="15 de maio de 2027, às 16h · Traffô, São Paulo. Toque para abrir o seu convite.">
 <meta property="og:image" content="https://fernandaethiago.convidaeu.com.br/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -141,6 +141,25 @@ h2{margin:0 0 10px;font:400 40px/1.1 "Pinyon Script",cursive;color:var(--olive)}
 .gift p{margin:2px 0 8px;padding:3px 14px;border-radius:999px;background:#5c6618;font:500 15px/1.3 Jost,sans-serif;color:#fbf5e3;white-space:nowrap}
 .gift .btn{margin-top:auto;min-height:44px;padding:0 18px;font-size:14px}
 @media(min-width:640px){.gifts{grid-auto-columns:200px}}
+.sheet-bg{position:fixed;inset:0;z-index:30;background:rgba(30,28,12,.5)}
+.sheet{position:fixed;left:50%;bottom:0;z-index:31;width:min(100%,480px);max-height:92svh;overflow:auto;transform:translateX(-50%);
+  padding:22px 20px calc(24px + env(safe-area-inset-bottom));background:#f4f1e5;border-radius:18px 18px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.25);text-align:center;animation:up .35s ease-out}
+@keyframes up{from{transform:translate(-50%,40px);opacity:0}}
+.sh-x{position:absolute;top:10px;right:10px;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--olive);font:300 30px/1 Jost,sans-serif;cursor:pointer}
+.sh-x:focus-visible{outline:2px solid var(--gold)}
+.sheet img{display:block;margin:0 auto 6px;width:150px;height:72px;object-fit:contain}
+.sheet h3{margin:0 30px 6px;font:500 22px/1.2 "Cormorant Garamond",serif;color:var(--ink);text-wrap:balance}
+.sh-price{display:inline-block;margin:0 0 16px;padding:3px 16px;border-radius:999px;background:#5c6618;color:#fbf5e3;font:500 16px/1.4 Jost,sans-serif}
+.sh-steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;text-align:left;counter-reset:p}
+.sh-steps li{counter-increment:p;position:relative;display:grid;gap:8px;padding:14px 14px 16px 52px;background:#fffdf6;border:1px solid rgba(92,102,24,.25);border-radius:12px;font:400 15px/1.45 Jost,sans-serif;color:#5b5533}
+.sh-steps li::before{content:counter(p);position:absolute;left:14px;top:13px;width:26px;height:26px;border-radius:50%;background:#5c6618;color:#fbf5e3;display:grid;place-items:center;font:500 14px/1 Jost,sans-serif}
+.sh-steps b{font-weight:500;color:var(--ink);font-size:16px}
+.sh-steps .btn{width:100%}
+.sh-steps small{font-size:13px;color:#7a7254}
+.sh-steps small code{font:400 13px Jost,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+.linkbtn{border:0;background:none;padding:6px 2px;color:var(--olive);font:500 13px Jost,sans-serif;text-decoration:underline;cursor:pointer;min-height:32px}
+.sh-steps input{width:100%;min-height:46px;padding:11px 12px;font:400 16px/1.4 Jost,sans-serif;color:var(--ink);background:#fff;border:1px solid rgba(95,92,40,.35);border-radius:8px}
+.sh-steps input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .rule{width:90px;height:1px;background:var(--gold);margin:0 auto;border:0}
 footer{background:var(--olive-d);color:var(--gold-l);text-align:center;padding:26px 16px 32px;font:300 14px/1.6 Jost,sans-serif}
 footer a{color:#fbf5e3}
@@ -243,7 +262,7 @@ Luciana Pavam</span></div>
 
   <section class="band rv">
     <h2>Local</h2>
-    <p class="venue" data-k="local">Bisutti Traffô</p>
+    <p class="venue" data-k="local">Traffô</p>
     <p class="muted" data-k="endereco">Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP</p>
     <p class="muted" id="recBox" style="margin-top:14px;font-style:italic" data-k="recepcao">Após a cerimônia, os noivos recepcionarão os convidados no mesmo local.</p>
     <p class="muted" style="margin-top:18px;font-size:16px">Vai de carro ou de Uber/99? Abra a rota ou copie o endereço:</p>
@@ -304,6 +323,27 @@ Luciana Pavam</span></div>
   </footer>
 </main>
 
+<!-- janela do presente: Pix + aviso no WhatsApp -->
+<div class="sheet-bg" id="shBg" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" hidden>
+  <button class="sh-x" id="shX" type="button" aria-label="Fechar">×</button>
+  <img id="shImg" alt="">
+  <h3 id="shTitle">Presente</h3>
+  <p class="sh-price" id="shPrice"></p>
+  <ol class="sh-steps">
+    <li><b>Faça o Pix de <span id="shVal"></span></b>
+      <span>Copie o código e cole no app do seu banco, em “Pix copia e cola”. O valor já vai preenchido.</span>
+      <button class="btn" id="shCopyCode" type="button">Copiar código Pix</button>
+      <small>Ou use a chave Pix: <code id="shKey"></code> <button class="linkbtn" id="shCopyKey" type="button">copiar chave</button></small>
+    </li>
+    <li><b>Avise os noivos</b>
+      <span>Depois do Pix, conte para os noivos qual presente você deu.</span>
+      <input id="shNome" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome">
+      <a class="btn ghost" id="shWa" href="#">Avisar pelo WhatsApp</a>
+    </li>
+  </ol>
+</div>
+
 <!-- música: toca quando a pessoa toca no selo (o navegador não deixa tocar sozinha) -->
 <audio id="audio" preload="auto" loop></audio>
 <button class="music" id="musicBtn" type="button" aria-label="Pausar música">
@@ -325,15 +365,17 @@ Luciana Pavam</span></div>
     paisNoivo: 'Rodrigo Ezequiel\nLuciana Pavam',
     inicio: '2027-05-15T16:00:00-03:00',
     duracaoHoras: 6,
-    local: 'Bisutti Traffô',
+    local: 'Traffô',
     endereco: 'Rua Gomes de Carvalho, 560 — Vila Olímpia, São Paulo/SP',
     recepcao: 'Após a cerimônia, os noivos recepcionarão os convidados no mesmo local.',
     /* deixe '' (vazio) o que a cliente ainda não mandou: a parte some do convite */
     traje: '',
     rsvpAte: '',
-    whatsapp: '5511971708440',   /* recebe as confirmações e os pedidos de presente */
+    whatsapp: '5511985564721',   /* recebe as confirmações e os avisos de presente */
     maxAcompanhantes: 5,
-    pix: '',
+    pix: 'fernanda.abdon17@gmail.com',
+    pixNome: 'Fernanda Abdon',   /* aparece no código Pix (sem acento, até 25 letras) */
+    pixCidade: 'Sao Paulo',
     presentesIntro: 'Presentes simbólicos, divertidos e cheios de carinho para os nossos primeiros momentos de casados!',
     /* lista de presentes — img = número da ilustração em ILUSTRACOES (0 a 24) */
     presentes: [
@@ -479,8 +521,44 @@ Luciana Pavam</span></div>
   /* sugestões de presente */
   const brl = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits: v % 1 ? 2 : 0});
   const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  document.getElementById('gifts').innerHTML = presentes.map(g => `<div class="gift">${ILUSTRACOES[g.img] ? `<img src="${ILUSTRACOES[g.img]}" alt="" loading="lazy">` : ''}<h3>${esc(g.nome)}</h3><p>${brl(g.valor)}</p>` +
-    (CFG.whatsapp ? `<a class="btn ghost" href="${wa(`Olá, ${CFG.noiva} e ${CFG.noivo}! Gostaria de presentear vocês com: ${g.nome} (${brl(g.valor)}). Como faço?`)}">Presentear</a>` : '') + '</div>').join('');
+  document.getElementById('gifts').innerHTML = presentes.map((g, i) => `<div class="gift">${ILUSTRACOES[g.img] ? `<img src="${ILUSTRACOES[g.img]}" alt="" loading="lazy">` : ''}<h3>${esc(g.nome)}</h3><p>${brl(g.valor)}</p>` +
+    (CFG.pix ? `<button class="btn ghost" type="button" data-g="${i}">Presentear</button>`
+      : CFG.whatsapp ? `<a class="btn ghost" href="${wa(`Olá, ${CFG.noiva} e ${CFG.noivo}! Gostaria de presentear vocês com: ${g.nome} (${brl(g.valor)}). Como faço?`)}">Presentear</a>` : '') + '</div>').join('');
+
+  /* código Pix "copia e cola" (padrão do Banco Central) com o valor do presente */
+  const semAcento = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9 ]/g, '').toUpperCase();
+  const tlv = (id, v) => id + String(v.length).padStart(2, '0') + v;
+  const crc16 = t => { let c = 0xFFFF; for (const ch of t) { c ^= ch.charCodeAt(0) << 8; for (let k = 0; k < 8; k++) c = (c & 0x8000) ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF; } return c.toString(16).toUpperCase().padStart(4, '0'); };
+  const pixCodigo = valor => {
+    const p = tlv('00', '01') + tlv('26', tlv('00', 'br.gov.bcb.pix') + tlv('01', CFG.pix)) + tlv('52', '0000') + tlv('53', '986') +
+      (valor ? tlv('54', valor.toFixed(2)) : '') + tlv('58', 'BR') + tlv('59', semAcento(CFG.pixNome || CFG.noiva).slice(0, 25)) +
+      tlv('60', semAcento(CFG.pixCidade || 'Brasil').slice(0, 15)) + tlv('62', tlv('05', '***')) + '6304';
+    return p + crc16(p);
+  };
+
+  /* janela do presente */
+  const sheet = document.getElementById('sheet'), shBg = document.getElementById('shBg'), shNome = document.getElementById('shNome'), shWa = document.getElementById('shWa');
+  let atual = null, ultimoFoco = null;
+  const msgPresente = () => `Olá, ${CFG.noiva} e ${CFG.noivo}! Acabei de enviar pelo Pix o presente “${atual.nome}” (${brl(atual.valor)}).` + (shNome.value.trim() ? `\nCom carinho, ${shNome.value.trim()}.` : '');
+  const abrirPresente = i => {
+    atual = presentes[i]; ultimoFoco = document.activeElement;
+    const img = document.getElementById('shImg'); img.hidden = !ILUSTRACOES[atual.img]; if (!img.hidden) img.src = ILUSTRACOES[atual.img];
+    document.getElementById('shTitle').textContent = atual.nome;
+    document.getElementById('shPrice').textContent = brl(atual.valor);
+    document.getElementById('shVal').textContent = brl(atual.valor);
+    document.getElementById('shKey').textContent = CFG.pix;
+    shWa.hidden = !CFG.whatsapp; shNome.hidden = !CFG.whatsapp;
+    shWa.href = wa(msgPresente());
+    sheet.hidden = false; shBg.hidden = false; document.body.style.overflow = 'hidden';
+    document.getElementById('shX').focus();
+  };
+  const fecharPresente = () => { sheet.hidden = true; shBg.hidden = true; document.body.style.overflow = ''; if (ultimoFoco) ultimoFoco.focus(); };
+  document.getElementById('gifts').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (b) abrirPresente(+b.dataset.g); });
+  document.getElementById('shX').addEventListener('click', fecharPresente);
+  shBg.addEventListener('click', fecharPresente);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) fecharPresente(); });
+  shNome.addEventListener('input', () => { shWa.href = wa(msgPresente()); });
+  shWa.addEventListener('click', () => { shWa.href = wa(msgPresente()); });
 
   /* carrossel da lista */
   const gl = document.getElementById('gifts'), gPrev = document.getElementById('gPrev'), gNext = document.getElementById('gNext'), gInfo = document.getElementById('gInfo');
@@ -549,6 +627,8 @@ Luciana Pavam</span></div>
   });
   copiar(document.getElementById('copy'), () => CFG.pix, document.getElementById('pixKey'));
   copiar(document.getElementById('copyEnd'), () => CFG.endereco, document.querySelector('.venue + .muted'));
+  copiar(document.getElementById('shCopyCode'), () => pixCodigo(atual.valor), document.getElementById('shKey'));
+  copiar(document.getElementById('shCopyKey'), () => CFG.pix, document.getElementById('shKey'));
 
   /* contagem regressiva */
   const pad = n => String(n).padStart(2, '0');
